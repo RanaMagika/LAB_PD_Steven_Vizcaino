@@ -36,7 +36,7 @@ El objetivo de la practica es comprender el funcionamiento de las interrupciones
  En el IDE de Arduino, usamos una función llamada attachInterrupt() para establecer una interrupción en base a un pin por pin. La sintaxis recomendada es la siguiente.  
    attachInterrupt(GPIOPin, ISR, Mode);
 ### Practica A
-Para este apartado se nos pide que hagamos un programa para manejar un boton y contar cuantas veces ha sido presionado, para armar el circuito necesitaremos lo siguiente...  
+Para este apartado se nos pide que hagamos un programa para manejar un boton y contar cuantas veces  es presionado, se generara una interrupción que incrementa un contador y registra el evento en la variable pressed. Además, después de un minuto, la interrupción se desactiva. Para armar el circuito necesitaremos lo siguiente...  
 ### Materiales:
 -protoboard
 -esp32-s3
@@ -45,7 +45,16 @@ El circuito deberia quedar tal que asi:
 ![image](https://github.com/user-attachments/assets/ba77938f-dc02-4db4-87c9-d504d80a7943)  
 
 En el programa deberiamos de ver esta salida cuando le damos al boton: 
-![image](https://github.com/user-attachments/assets/8044fc35-ebed-41ea-a701-56118b4fe148)
+![image](https://github.com/user-attachments/assets/8044fc35-ebed-41ea-a701-56118b4fe148)  
+
+### Conclusiones
+
+- La interrupción responde inmediatamente a la presión del botón.
+
+- El uso de attachInterrupt() permite definir fácilmente la función de respuesta.
+
+- El programa finaliza la interrupción tras 60 segundos para evitar ejecuciones innecesarias.
+
 
 
 
