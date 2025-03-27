@@ -1,3 +1,6 @@
 Laboratorio de Procesos digitales
-![Uploading Captura de pantalla 2025-03-25 110652.png…]()
+·En este README explicare todas las practicas realizadas en el laboratorio durante el curso escolar 2024/2025 explicadas por mi profesor Lopez Palma Manuel
+
+
+
 
