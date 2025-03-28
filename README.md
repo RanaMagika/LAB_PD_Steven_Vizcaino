@@ -381,13 +381,80 @@ Las tareas en FreeRTOS tienen prioridades, y el sistema ejecuta primero las tare
 
 ## Ejercicio Práctico 1
 
+Este ejercicio tiene como objetivo demostrar cómo FreeRTOS maneja la ejecución de múltiples tareas en un ESP32. Se crean dos procesos concurrentes que imprimen mensajes en el puerto serie a intervalos de un segundo. A continuación, se desglosa su funcionamiento:  
+1. Inicialización:
+
+Serial.begin(112500): Configura la comunicación serial a 112500 baudios.  
+
+xTaskCreate(): Crea una nueva tarea llamada anotherTask. Esta tarea se ejecutará en paralelo con el loop principal de Arduino.  
+
+2. Bucle Principal (loop):
+Cada segundo (delay(1000)), imprime "this is ESP32 Task" en el puerto serie.  
+3. Tarea Secundaria (anotherTask):
+
+Se ejecuta en un bucle infinito (for(;;)), imprimiendo "this is another Task" cada segundo.
+
+El delay(1000) permite que el planificador de FreeRTOS le ceda tiempo de ejecución a otras tareas.  
+
+La última línea vTaskDelete(NULL); nunca se ejecutará porque el bucle no termina.
+Explicación del Funcionamiento
+-  Ejecución del Código
+El ESP32 ejecuta dos tareas en paralelo:
+
+1. Tarea Principal (loop): Imprime "this is ESP32 Task" cada segundo.
+2. Tarea Secundaria (anotherTask): Imprime "this is another Task" cada segundo.  
+-¿Por qué ocurre esto?
+
+Planificación de tareas: FreeRTOS permite que ambas tareas compartan el tiempo de CPU.
+
+Prioridad: Ambas tareas tienen la misma prioridad (1), por lo que el planificador distribuye equitativamente el tiempo de ejecución.
+
+Alternancia en la ejecución: Al usar delay(1000), cada tarea se "duerme" por un segundo, permitiendo que la otra tarea se ejecute.
+
+## 📌 **Explicación del Ejercicio Práctico 2**
+
+En este ejercicio se busca implementar dos tareas que trabajen de manera sincronizada para encender y apagar un LED usando **semáforos** en FreeRTOS.
+
+---
+
+### **🔹 Conceptos Claves**
+
+Antes de analizar el código, es importante comprender algunos conceptos:
+
+#### **1️  ¿Qué es un Semáforo en FreeRTOS?**
+Un **semáforo** en FreeRTOS es un mecanismo de sincronización que permite coordinar el acceso a un recurso compartido (en este caso, el LED).
+
+#### **2️2 ¿Por qué usar un Semáforo?**
+Si ambas tareas intentan encender y apagar el LED sin coordinación, podrían ejecutarse simultáneamente, causando un comportamiento errático. El semáforo asegura que solo una tarea controle el LED a la vez.
+
+---
+
+### **🔹 Explicación del Funcionamiento**
+
+1  **Creación de las tareas:**  
+   Se crean dos tareas:
+   - **Tarea 1:** Enciende el LED.
+   - **Tarea 2:** Apaga el LED.
+
+2️ **Uso del semáforo:**  
+   Para sincronizar las tareas, se utiliza un semáforo binario. Este semáforo tiene dos estados posibles: `xSemaphoreTake` (espera hasta que el semáforo esté disponible) y `xSemaphoreGive` (libera el semáforo para que otra tarea lo pueda usar).
+
+3️  **Funcionamiento de las tareas:**  
+   - **Tarea 1 (Encender LED):** Esta tarea se ejecuta y espera hasta que el semáforo esté disponible. Luego enciende el LED y libera el semáforo, permitiendo que la otra tarea lo apague.
+   - **Tarea 2 (Apagar LED):** Después de recibir el semáforo, apaga el LED y libera el semáforo para que la tarea 1 pueda volver a encender el LED.
+
+4️  **Sincronización:**  
+   Las tareas están sincronizadas gracias al semáforo, garantizando que solo una de ellas acceda al LED a la vez.
+
+---
+### Fotos del proceso: 
+![image](https://github.com/user-attachments/assets/27a13428-cf4c-4f09-a84c-bb2ae5bb4748)
+![image](https://github.com/user-attachments/assets/34529a09-c2f6-46bd-9de7-b13dd5c1fd51)
 
 
-
-
-
-
-
+### Conclusiones
+- Este ejercicio es una buena introducción a cómo trabajar con semáforos en FreeRTOS para sincronizar tareas.
+- El semáforo asegura que las tareas no interfieran entre sí, lo que es fundamental en aplicaciones multitarea.
 
 
 # Práctica 6: Buses de Comunicación II (SPI)
