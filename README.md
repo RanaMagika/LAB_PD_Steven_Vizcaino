@@ -186,6 +186,54 @@ An interrupt has occurred. Total number: X
 ```
 ---
 
+### Ejercicio para subir nota 
+-	Teneis que  hacer que chatgpt  os genere un codigo  para esp32  arduino  
+sugerencia de  prompt  :   quiero hacer un programa para arduino esp32 en el entorno de platformio ; que controle un led y dos pulsadores utilizando interrupciones de un timer de forma que el led parpadee a una fecurncia inicial y si pulsamos a un pulsador la frecuencia de parpadeo suba y si pulsamos a otro pulsador dicha frecuencia baje ; grrantiza de que el pulsador los pulsadores que se deben de leer en el timer se filtran para evitar rebotes
+
+# **Descripción del funcionamiento del programa**
+
+Este programa para ESP32, desarrollado en PlatformIO, controla un **LED y dos pulsadores** utilizando **interrupciones de un temporizador (timer)**.  
+Su objetivo es hacer que el LED parpadee a una frecuencia inicial y que los pulsadores puedan **aumentar o disminuir** esta frecuencia.  
+Además, el código incluye un mecanismo de **filtrado de rebotes** para evitar lecturas erróneas de los pulsadores.  
+
+---
+
+## **Funcionamiento detallado**
+
+### **1. Configuración inicial**
+- Se define un temporizador de hardware para generar interrupciones periódicas.  
+- Se configuran los pines del LED y los pulsadores como salida y entrada, respectivamente.  
+- Se activan las interrupciones del timer y de los pulsadores.  
+
+### **2. Interrupciones del temporizador**
+- Se ejecuta una función en cada interrupción del timer.  
+- Esta función cambia el estado del LED (ON/OFF) según la frecuencia establecida.  
+
+### **3. Interrupciones de los pulsadores**
+- Cada pulsador tiene su propia interrupción.  
+- Cuando se presiona el pulsador de aumento, la frecuencia de parpadeo del LED se incrementa.  
+- Cuando se presiona el pulsador de disminución, la frecuencia se reduce.  
+- Se implementa un **filtro de rebotes**, que evita lecturas falsas debido a la naturaleza mecánica de los pulsadores.  
+
+### **4. Bucle principal (loop)**
+- En el `loop()`, solo se manejan las variables modificadas por las interrupciones.  
+- Se garantiza que los cambios de frecuencia sean efectivos y que el LED parpadee correctamente.  
+
+---
+
+## **Comprobación del funcionamiento**
+Para probarlo, puedes:  
+- Observar el parpadeo del LED y verificar si responde correctamente a los pulsadores.  
+- Usar `Serial.print()` para mostrar en el monitor serie la frecuencia actual del parpadeo.  
+- Ajustar la frecuencia mínima y máxima para evitar valores fuera de rango.  
+
+Este enfoque es eficiente porque el ESP32 no se bloquea con `delay()`, ya que el control del tiempo se realiza mediante **interrupciones del temporizador**.  
+
+###Fotos del montaje y proceso: 
+![image](https://github.com/user-attachments/assets/39de810b-481b-47fd-bb88-363e952c4c65)
+![image](https://github.com/user-attachments/assets/563c21d6-335a-49d0-922f-117e14e6ada8)
+
+
 ## Conclusiones
 Las interrupciones en el ESP32 permiten reaccionar de manera eficiente a eventos sin necesidad de realizar comprobaciones constantes (*polling*). Su uso optimiza el rendimiento del microcontrolador y permite desarrollar aplicaciones más eficientes y organizadas.
 
