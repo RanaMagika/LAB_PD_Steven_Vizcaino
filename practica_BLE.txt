@@ -1,0 +1,94 @@
+Instrucciones para la práctica de BLE con ESP32-S3
+Objetivo
+Implementar una aplicación Bluetooth Low Energy (BLE) en un ESP32-S3 usando Arduino con PlatformIO que simule un sensor de temperatura y permita la lectura y escritura de datos.
+Requisitos de hardware
+
+Placa ESP32-S3 (como ESP32-S3-DevKitC-1)
+Cable USB para programación
+Computadora con PlatformIO instalado
+Dispositivo con capacidad BLE para probar (smartphone, tablet, etc.)
+
+Configuración del proyecto
+
+Crea un nuevo proyecto en PlatformIO:
+
+Selecciona ESP32-S3 como placa
+Selecciona Arduino como framework
+
+
+Reemplaza el archivo platformio.ini con el proporcionado que incluye:
+
+Configuración para ESP32-S3
+Velocidad de monitor serial a 115200
+Inclusión de la biblioteca NimBLE-Arduino (alternativa más ligera a la BLE estándar)
+
+
+Copia el código principal al archivo src/main.cpp
+
+Funcionalidades implementadas
+
+Configuración de BLE:
+
+Creación de un servidor BLE
+Definición de un servicio con UUID personalizado
+Configuración de una característica con propiedades de lectura, escritura y notificación
+
+
+Simulación de sensor:
+
+Generación de valores aleatorios de temperatura
+Actualización periódica (cada 2 segundos)
+
+
+Manejo de eventos:
+
+Detección de conexión y desconexión de dispositivos
+Callback para recibir y procesar datos enviados por el cliente
+
+
+
+Prueba del proyecto
+
+Compila y carga el código en tu ESP32-S3
+Abre el monitor serial para ver los mensajes de depuración
+Usa una aplicación BLE Scanner en tu smartphone:
+
+nRF Connect (Android/iOS)
+LightBlue (iOS)
+BLE Scanner (Android)
+
+
+Con la aplicación BLE:
+
+Busca el dispositivo "ESP32-S3 BLE Device"
+Conéctate al dispositivo
+Encuentra el servicio y la característica
+Lee los valores de temperatura
+Escribe datos para ver cómo se reciben en el ESP32-S3
+
+
+
+Ejercicios adicionales
+
+Añade un sensor real: Modifica el código para leer datos de un sensor real (DHT22, BME280, etc.)
+Implementa múltiples características: Crea una característica adicional para otro tipo de dato (humedad, presión, etc.)
+Control remoto: Añade una característica para controlar un LED de forma remota desde la aplicación BLE
+Seguridad: Implementa un sistema simple de autenticación antes de permitir ciertos comandos
+
+Resolución de problemas
+
+No aparece el dispositivo en el scanner:
+
+Verifica que el ESP32-S3 esté funcionando (mensajes en el monitor serial)
+Asegúrate de que BLE esté habilitado en tu smartphone
+
+
+Problemas de conexión:
+
+Reinicia tanto el ESP32-S3 como tu aplicación BLE
+Verifica que estés dentro del rango de BLE (aproximadamente 10 metros)
+
+
+Errores de compilación:
+
+Asegúrate de tener instalada la biblioteca NimBLE-Arduino
