@@ -57,6 +57,75 @@ En el programa deberiamos de ver esta salida cuando le damos al boton:
 
 
 
+# Práctica 6: Buses de Comunicación II (SPI)
+
+## Introducción
+En esta práctica se estudia el funcionamiento del bus SPI (Serial Peripheral Interface), un protocolo de comunicación síncrono ampliamente utilizado en sistemas embebidos. Se realizarán ejercicios prácticos con una tarjeta SD y un lector RFID para comprender mejor su aplicación.
+
+## Objetivos
+- Comprender el protocolo SPI y su funcionamiento.
+- Aprender a utilizar SPI en el ESP32-S3.
+- Realizar lectura y escritura en una memoria SD mediante SPI.
+- Leer etiquetas RFID utilizando SPI.
+- Implementar un sistema de almacenamiento de lecturas RFID en una tarjeta SD.
+- (Ejercicio de subida de nota) Mostrar la información en una página web.
+
+## Materiales
+- ESP32-S3
+- Módulo lector de tarjetas SD
+- Módulo lector RFID RC522
+- Cables de conexión
+- Tarjeta SD
+- Etiquetas RFID
+
+## Desarrollo
+### 1. Configuración del Bus SPI en ESP32-S3
+ESP32-S3 dispone de múltiples buses SPI, utilizaremos SPI2 para la conexión de los periféricos. La conexión de los dispositivos se realizó de la siguiente manera:
+
+| Función | Pin SD | Pin RFID |
+|---------|-------|---------|
+| MOSI    | GPIO35 | GPIO11  |
+| MISO    | GPIO37 | GPIO13  |
+| SCK     | GPIO36 | GPIO12  |
+| CS      | GPIO39 | GPIO10  |
+
+### 2. Ejercicio 1: Lectura y escritura en memoria SD
+Se desarrolló un programa que inicializa la tarjeta SD y permite la lectura de archivos almacenados en ella. Se verificó su correcto funcionamiento mediante la lectura de un archivo `archivo.txt`.  
+### Montaje de los componentes:
+![image](https://github.com/user-attachments/assets/4d85af68-683a-46d4-aef2-abb3cca2deab)
+### Lo que imprime la consola:  
+![image](https://github.com/user-attachments/assets/66866dc2-be0c-4612-981e-a905c18b1099)
+
+
+### 3. Ejercicio 2: Lectura de etiquetas RFID
+Se implementó un programa que permite la detección de tarjetas RFID y la lectura de su UID. La información obtenida se muestra en el monitor serie.
+
+### Montaje  y uso de los componentes:  
+![image](https://github.com/user-attachments/assets/34d458cf-16fb-4bdb-8d30-09b0ce60c1df)
+![image](https://github.com/user-attachments/assets/82c64dac-4e29-48e5-8e7a-a195150cc54f)
+### Lo que imprime la consola: 
+![image](https://github.com/user-attachments/assets/9982ed93-30ab-4cb1-a3e7-1b4a3dd2a684)
+
+
+
+## Resultados
+- Se logró la comunicación con la tarjeta SD y el lector RFID.
+- Se almacenaron correctamente las lecturas en la memoria SD.
+- Se implementó una página web para visualizar los datos.
+
+## Conclusiones
+- SPI es un protocolo eficiente y fácil de implementar en ESP32.
+- La gestión de múltiples dispositivos SPI requiere control adecuado de la señal CS.
+- La integración con almacenamiento y redes permite aplicaciones avanzadas.
+
+## Referencias
+- [ESP32 SPI Documentation](https://docs.espressif.com/)
+- [Arduino SPI Library](https://www.arduino.cc/en/reference/SPI)
+- [Tutorial RFID](https://naylampmechatronics.com/blog/22_tutorial-modulo-lector-rfid-rc522.html)
+
+
+
+
 
 
  
