@@ -238,6 +238,157 @@ Este enfoque es eficiente porque el ESP32 no se bloquea con `delay()`, ya que el
 Las interrupciones en el ESP32 permiten reaccionar de manera eficiente a eventos sin necesidad de realizar comprobaciones constantes (*polling*). Su uso optimiza el rendimiento del microcontrolador y permite desarrollar aplicaciones más eficientes y organizadas.
 
 
+# **Práctica 3: WiFi y Bluetooth en ESP32**
+
+El objetivo de esta práctica es comprender el funcionamiento de **WiFi y Bluetooth** en el ESP32, mediante dos ejercicios:
+
+1. **Creación de un servidor web en ESP32**  
+2. **Comunicación Bluetooth con un móvil a través de puerto serie**  
+
+## **1. Servidor Web con ESP32 (Modo STA)**  
+
+### **Funcionamiento**
+- El ESP32 se conecta a una red WiFi utilizando un **SSID** y una **contraseña**.
+- Una vez conectado, obtiene una dirección IP dentro de la red.
+- Se inicia un **servidor web** en el puerto 80.
+- Al acceder a la dirección IP desde un navegador, el ESP32 responde con una **página HTML sencilla**.
+- La página se genera directamente en el código, pero se debe modificar para incluir un archivo **HTML externo**.
+
+### **Salida esperada en el monitor serie**
+Al ejecutar el código, el monitor serie debería mostrar:  
+Try Connecting to [SSID] ...... WiFi connected successfully Got IP: 192.168.X.X HTTP server started
+· Cuando nos conectamos al mismo wifi y ponemos la ip en nuestro pc nos deberia de cargar la web echa por el ESP32-S3
+![image](https://github.com/user-attachments/assets/021b54a5-4901-4d09-9d5d-46518dace209)
+·Aqui la modificamos para que sea dinamica y con colores:
+![image](https://github.com/user-attachments/assets/fd71036c-65e2-4d6a-9eb0-ef8ea165c4f2)
+
+
+
+## **2. Comunicación Bluetooth con el móvil**  
+
+### **Funcionamiento**
+- Se utiliza **Bluetooth clásico** en modo **Serial**.  
+- El ESP32 crea un dispositivo Bluetooth llamado `"ESP32test"`.  
+- Un móvil puede emparejarse con el ESP32 y enviar datos a través de una aplicación de terminal Bluetooth.  
+- Los datos enviados desde el móvil se mostrarán en el monitor serie del ESP32.  
+- Si el ESP32 recibe datos a través de la conexión serie, los enviará de vuelta al móvil.  
+# **Práctica de Bluetooth Low Energy (BLE) con ESP32-S3**
+
+## **Objetivo**
+Implementar una aplicación **Bluetooth Low Energy (BLE)** en un **ESP32-S3** usando **Arduino con PlatformIO** que simule un sensor de temperatura y permita la **lectura y escritura de datos**.
+
+---
+
+## **Requisitos de Hardware**
+- **Placa ESP32-S3** (Ejemplo: ESP32-S3-DevKitC-1)
+- **Cable USB** para programación
+- **Computadora** con **PlatformIO** instalado
+- **Dispositivo con capacidad BLE** (smartphone, tablet, etc.)
+
+---
+
+## **Configuración del Proyecto**
+### **1. Crear un nuevo proyecto en PlatformIO**
+- Selecciona **ESP32-S3** como placa.
+- Selecciona **Arduino** como framework.
+
+### **2. Configurar platformio.ini**
+- Reemplaza el archivo `platformio.ini` con la configuración proporcionada.
+- Incluye:
+  - Configuración para **ESP32-S3**.
+  - Velocidad del **monitor serial** a **115200**.
+  - Inclusión de la biblioteca **NimBLE-Arduino** *(alternativa más ligera que la BLE estándar)*.
+
+### **3. Copiar el código principal**
+- Copia el código en el archivo `src/main.cpp`.
+
+---
+
+## **Funcionalidades Implementadas**
+### **1. Configuración de BLE**
+- Creación de un **servidor BLE**.
+- Definición de un **servicio** con **UUID personalizado**.
+- Configuración de una **característica** con propiedades de:
+  - **Lectura**
+  - **Escritura**
+  - **Notificación**
+
+### **2. Simulación de Sensor**
+- **Generación de valores aleatorios de temperatura**.
+- **Actualización periódica** *(cada 2 segundos)*.
+
+### **3. Manejo de Eventos**
+- **Detección de conexión** y **desconexión** de dispositivos.
+- **Callbacks** para recibir y procesar datos enviados por el cliente.
+
+---
+
+## **Prueba del Proyecto**
+### **1. Cargar y ejecutar el código**
+- **Compila y carga** el código en el **ESP32-S3**.
+- **Abre el monitor serial** para ver los mensajes de depuración.
+
+### **2. Escanear y conectar al ESP32-S3**
+- Usa una aplicación **BLE Scanner** en tu smartphone:
+  - **nRF Connect** *(Android/iOS)*
+  - **LightBlue** *(iOS)*
+  - **BLE Scanner** *(Android)*
+
+- En la aplicación:
+  1. **Busca el dispositivo** `"ESP32-S3 BLE Device"`.
+  2. **Conéctate** al ESP32-S3.
+  3. **Encuentra el servicio** y la **característica**.
+  4. **Lee los valores de temperatura**.
+  5. **Escribe datos** para ver cómo se reciben en el ESP32-S3.
+### Imagenes del proceso y resultados: 
+![image](https://github.com/user-attachments/assets/35d5be55-604b-430c-aca9-3967b4bce8c9)
+![image](https://github.com/user-attachments/assets/d0894669-50be-491d-baf2-296dcb8a7ec4)
+![image](https://github.com/user-attachments/assets/f00cea7d-9a81-4e31-aaf2-417f99267f8d)
+
+# Práctica 4: Sistemas Operativos en Tiempo Real
+
+## Objetivo
+El objetivo de esta práctica es comprender el funcionamiento de un sistema operativo en tiempo real. En este ejercicio, se generarán varias tareas y se analizará cómo se ejecutan dividiendo el tiempo de uso de la CPU.
+
+---
+
+## Introducción Teórica
+
+### Multitarea en ESP32 con Arduino y FreeRTOS
+El ESP32 es un microcontrolador potente y pequeño, ideal para dispositivos IoT. Aunque el entorno Arduino ejecuta todo su código en un solo núcleo, el uso de FreeRTOS en el ESP32 permite programar tareas en ambos núcleos, optimizando el rendimiento. FreeRTOS permite ejecutar múltiples tareas, donde cada una puede tener diferentes prioridades, ayudando a gestionar el tiempo de CPU de manera eficiente.
+
+### Creando Tareas
+Para crear una tarea en FreeRTOS, debes:
+1. **Definir una función** que contenga el código que se ejecutará en la tarea.
+2. **Crear la tarea** con la función `xTaskCreate()`.
+
+**Ejemplo básico:**
+- Un LED parpadeando. La tarea se ejecuta en un bucle infinito, y se utiliza `vTaskDelay()` para pausar la tarea entre cada cambio de estado del LED.
+
+### Tareas Únicas
+También es posible crear tareas que se ejecutan solo una vez. Al finalizar la tarea, se debe llamar a `vTaskDelete()` para liberar la tarea y evitar que el sistema la ejecute de nuevo.
+
+### Elegir el Núcleo de Ejecución
+FreeRTOS permite especificar en qué núcleo (de los dos disponibles en el ESP32) se ejecutará una tarea utilizando `xTaskCreatePinnedToCore()`. Esto es útil para optimizar el rendimiento y distribuir las tareas entre ambos núcleos.
+
+### Detener Tareas
+Para detener una tarea, se puede usar `vTaskDelete()` dentro de la misma tarea o desde otra tarea, utilizando un identificador de tarea (TaskHandle).
+
+### Prioridad de las Tareas
+Las tareas en FreeRTOS tienen prioridades, y el sistema ejecuta primero las tareas de mayor prioridad. El rango de prioridades va de 0 a 24, donde un número más alto indica mayor prioridad. Si dos tareas tienen la misma prioridad, FreeRTOS las ejecutará de forma compartida.
+
+---
+
+## Ejercicio Práctico 1
+
+
+
+
+
+
+
+
+
 
 # Práctica 6: Buses de Comunicación II (SPI)
 
