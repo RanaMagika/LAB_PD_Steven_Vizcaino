@@ -5,8 +5,16 @@ Steven Daniel Vizcaino Cedeño
 
 ·En estas practicas utlizaremos el esp32-s3, el ESP32-S3 es un microcontrolador desarrollado por Espressif Systems, parte de la familia ESP32. Está diseñado para ofrecer un alto rendimiento en aplicaciones que requieren conectividad inalámbrica, procesamiento de señales y computación avanzada, todo en un solo chip. Con este microcontrolador aplicaremos lo aprendido en teoria a ejemplos practicos en el laboratorio. Empezemos!!!
 
-## Practica 1
+## Practica 1: Blink
 En esta practica el objetivo es producir el parpadeo periodico de un led. Se utilizara la salida serie para depurar el programa, esto quiere decir que vas a utilizar la comunicación serie (como el puerto UART en un microcontrolador) para enviar información desde tu dispositivo hacia una computadora o terminal. Esta salida sirve para mostrar mensajes de depuración, errores o información sobre el estado del programa mientras se ejecuta.
+
+## Objetivos
+- Configurar un pin del ESP32 como salida.
+- Implementar un bucle infinito para el parpadeo del LED.
+- Enviar mensajes por el puerto serie para depuración.
+- Optimizar el control del LED utilizando acceso directo a los registros del ESP32.
+- Determinar la máxima frecuencia de parpadeo sin usar `delay()`.
+
 Para hacer esto tendremos que montar un circuito conectado al esp32-s3 donde necesitaremos de lo siguiente...
 ### Materiales:
 - Protoboard
@@ -17,6 +25,46 @@ Para hacer esto tendremos que montar un circuito conectado al esp32-s3 donde nec
 
  El montaje deberia quedar tal que asi:
  ![image](https://github.com/user-attachments/assets/9cd7c811-7743-47ef-8e95-d21cb53cf0dd)
+
+  ## Desarrollo
+### 1. Configuración inicial
+Se configura un pin del ESP32 como salida para controlar el LED.
+
+### 2. Modificación para enviar datos por el puerto serie
+Se inicializa el puerto serie y se envían mensajes "ON" y "OFF" cada vez que cambia el estado del LED.
+
+<img width="177" alt="image" src="https://github.com/user-attachments/assets/f254a317-8eac-47ce-89e8-c002ad8956e4" />  
+
+### 3. Control directo de registros
+Se accede directamente a los registros del ESP32 para modificar el estado del LED de manera más eficiente.
+
+### 4. Eliminación de `delay()` y medición de frecuencia
+Se reemplaza la función `delay()` por una técnica basada en temporizadores y se mide la máxima frecuencia de parpadeo con un osciloscopio en los siguientes escenarios:
+- Con envío por puerto serie y usando funciones de Arduino.
+- Con envío por puerto serie y acceso directo a registros.
+- Sin envío por puerto serie y usando funciones de Arduino.
+- Sin envío por puerto serie y acceso directo a registros.
+![image](https://github.com/user-attachments/assets/753f7682-ca96-46de-bb9a-96a43484a9e0)
+![image](https://github.com/user-attachments/assets/f383d063-db65-48d9-be51-ced3d59a3f16)
+![image](https://github.com/user-attachments/assets/745b0ab1-6d6d-4d67-a341-d17b9c77e27f)
+![image](https://github.com/user-attachments/assets/ee027b7c-c9ee-43a8-be04-be55a366db48)
+
+
+## Resultados
+- Se logró implementar el parpadeo del LED en diferentes configuraciones.
+- Se observó que el acceso directo a registros mejora la eficiencia.
+- Se determinó la máxima frecuencia de parpadeo medible con osciloscopio.
+
+## Conclusiones
+- El acceso directo a registros permite una mayor optimización en la manipulación del hardware.
+- La comunicación serie introduce retardos que afectan el rendimiento.
+- La eliminación de `delay()` permite alcanzar frecuencias más altas de parpadeo.
+- El tiempo libre del procesador depende de la estrategia utilizada para alternar el estado del LED.
+
+## Referencias
+- [Documentación oficial de ESP32](https://docs.espressif.com/)
+- [Uso de PlatformIO con ESP32](https://electropeak.com/learn/getting-started-with-platformio-ide-to-program-esp32/)
+
 
 
 
