@@ -69,39 +69,125 @@ Se reemplaza la función `delay()` por una técnica basada en temporizadores y s
 
 
 
-## Practica 2
-El objetivo de la practica es comprender el funcionamiento de las interrupciones. Para lo cual realizaremos una practica donde controlaremos 2 leds de una forma periódica y una entrada ; de forma que el uso de la entrada provoque un cambio de frecuencia de las oscilaciones pero solo en un led
-·¿Qué es una interrupción hardware?  
 
- A un nivel básico, una interrupción es una señal que interrumpe la actividad normal de nuestro microprocesador y salta a atenderla. Hay tres eventos que pueden disparar una interrupción:
+.  
+ 
 
--Un evento hardware, previamente definido  
--Un evento programado, o Timer  
--Una llamada por software  
+ 
 
- En el ESP32, podemos definir una función de rutina de servicio de interrupción que se llamará cuando un pin GPIO cambie el valor de su señal. Con una placa ESP32, todos los pines GPIO pueden ser configurados para funcionar como entradas de solicitud de interrupción.  
-  
- En el IDE de Arduino, usamos una función llamada attachInterrupt() para establecer una interrupción en base a un pin por pin. La sintaxis recomendada es la siguiente.  
-   attachInterrupt(GPIOPin, ISR, Mode);
-### Practica A
-Para este apartado se nos pide que hagamos un programa para manejar un boton y contar cuantas veces  es presionado, se generara una interrupción que incrementa un contador y registra el evento en la variable pressed. Además, después de un minuto, la interrupción se desactiva. Para armar el circuito necesitaremos lo siguiente...  
+
+
+# Práctica 2: Interrupciones
+
+## Objetivo
+El objetivo de la práctica es comprender el funcionamiento de las interrupciones. Para ello, realizaremos una práctica donde controlaremos dos LEDs de forma periódica y una entrada; el uso de la entrada provocará un cambio de frecuencia de las oscilaciones, pero solo en un LED.
+
+---
+
+## Introducción Teórica
+
+### ¿Qué es una interrupción hardware?
+A nivel básico, una interrupción es una señal que interrumpe la actividad normal del microprocesador y salta a atenderla. Hay tres eventos que pueden disparar una interrupción:
+
+- Un evento hardware, previamente definido.
+- Un evento programado, o Timer.
+- Una llamada por software.
+
+Cuando un evento dispara una interrupción, la ejecución normal del micro se suspende ordenadamente para poder volver, ejecutando una función especial llamada *Interrupt Service Routine (ISR)* o *Interrupt Service Handler (ISH)*. Cuando el ISR/ISH finaliza, el procesador vuelve al punto donde se detuvo y continúa con la ejecución normal.
+
+El concepto de verificar periódicamente el estado de un pin o registro se llama *Polling*, mientras que el uso de interrupciones permite reaccionar a eventos sin necesidad de realizar comprobaciones constantes.
+
+### Tipos de Interrupciones
+1. **Evento hardware**
+2. **Evento programado (Timer)**
+3. **Llamada por software**
+
+En el ESP32, podemos definir una rutina de servicio de interrupción para ejecutar código cuando un pin GPIO cambie de estado.
+
+---
+
+## Interrupciones en ESP32
+
+### Adjuntar una interrupción a un GPIO
+En el entorno de Arduino, se usa la función `attachInterrupt()` con la siguiente sintaxis:
+
+```cpp
+attachInterrupt(GPIOPin, ISR, Mode);
+```
+
+Los parámetros son:
+- **GPIOPin**: Pin que generará la interrupción.
+- **ISR**: Función que se ejecutará cuando se dispare la interrupción.
+- **Mode**: Momento en que se disparará la interrupción, con opciones:
+  - `LOW`: Cuando el pin está en bajo.
+  - `HIGH`: Cuando el pin está en alto.
+  - `CHANGE`: Cambio de estado (alto a bajo o viceversa).
+  - `FALLING`: Paso de alto a bajo.
+  - `RISING`: Paso de bajo a alto.
+
+Para desactivar la interrupción, se usa `detachInterrupt(GPIOPin);`.
+
+### Temporizadores en ESP32
+El ESP32 cuenta con temporizadores internos que generan interrupciones cuando alcanzan un valor específico. Estos temporizadores tienen contadores de 64 bits y preescaladores de 16 bits.
+
+Los temporizadores pueden:
+- Contar hacia arriba o abajo.
+- Apoyar la recarga automática.
+- Generar alarmas cuando alcanzan un valor definido por software.
+
+Para más información, se recomienda leer [este tutorial](https://techtutorialsx.com/2017/10/07/esp32-arduino-timer-interrupts/).
+
+---
+
+## Práctica A: Interrupción por GPIO
+
+### Descripción
+En esta práctica, se configurará un botón que generará una interrupción cuando sea presionado, incrementando un contador y mostrando el número de pulsaciones en el puerto serie.
 ### Materiales:
 -protoboard
 -esp32-s3
 -boton  
 El circuito deberia quedar tal que asi:  
-![image](https://github.com/user-attachments/assets/ba77938f-dc02-4db4-87c9-d504d80a7943)  
+![image](https://github.com/user-attachments/assets/ba77938f-dc02-4db4-87c9-d504d80a7943) 
 
-En el programa deberiamos de ver esta salida cuando le damos al boton: 
+### Informe de Funcionamiento
+1. Se configura un botón en un pin GPIO con `INPUT_PULLUP`.
+2. Se adjunta una interrupción en modo `FALLING`.
+3. En la ISR, se incrementa un contador y se cambia un flag.
+4. En `loop()`, se verifica el flag y se imprime la cantidad de veces que el botón fue presionado.
+5. Después de un minuto, la interrupción se desactiva.
+
+### Salidas Obtenidas
+A través del puerto serie, se imprimen los siguientes mensajes cada vez que se presiona el botón:
+```
+Button 1 has been pressed X times
+Interrupt Detached!
+```
+---
 ![image](https://github.com/user-attachments/assets/8044fc35-ebed-41ea-a701-56118b4fe148)  
 
-### Conclusiones
+## Práctica B: Interrupción por Timer
 
-- La interrupción responde inmediatamente a la presión del botón.
+### Descripción
+En esta práctica, se usará un temporizador para generar interrupciones periódicas e incrementar un contador de interrupciones.
 
-- El uso de attachInterrupt() permite definir fácilmente la función de respuesta.
+### Informe de Funcionamiento
+1. Se configura un temporizador con `timerBegin()`.
+2. Se adjunta una interrupción con `timerAttachInterrupt()`.
+3. Se establece una alarma con `timerAlarmWrite()`.
+4. Se habilita la alarma con `timerAlarmEnable()`.
+5. En cada interrupción, se incrementa un contador.
+6. En `loop()`, si hay una interrupción, se muestra el total de interrupciones en el puerto serie.
 
-- El programa finaliza la interrupción tras 60 segundos para evitar ejecuciones innecesarias.
+### Salidas Obtenidas
+El puerto serie imprimirá:
+```
+An interrupt has occurred. Total number: X
+```
+---
+
+## Conclusiones
+Las interrupciones en el ESP32 permiten reaccionar de manera eficiente a eventos sin necesidad de realizar comprobaciones constantes (*polling*). Su uso optimiza el rendimiento del microcontrolador y permite desarrollar aplicaciones más eficientes y organizadas.
 
 
 
