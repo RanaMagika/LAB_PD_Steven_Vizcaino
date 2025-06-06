@@ -642,6 +642,7 @@ Este protocolo usa tres líneas:
 
 ![image](https://github.com/user-attachments/assets/37511406-b150-4014-ab5e-f3e3bdf813a4)
 
+![image](https://github.com/user-attachments/assets/d834d51f-1ef6-404f-be43-03adb20c77ad)
 
 ### Descripción
 
@@ -723,6 +724,138 @@ bitrate     1411 kbps
 - Reproducir audio desde **memoria interna** es útil para demostraciones rápidas y simples.
 - Reproducir desde **tarjeta SD** es la mejor opción para manejar archivos de mayor tamaño y duración.
 
+
+
+# Práctica 8: Buses de Comunicación IV - UART
+
+## 🎯 Objetivo
+
+Comprender el funcionamiento de la comunicación **serie asíncrona UART** a través de ejemplos prácticos utilizando el **ESP32-S3**. Esta comunicación es esencial y se ha usado en todas las prácticas al emplear `Serial.print()`.
+
+---
+
+## 📚 Introducción Teórica
+
+### ¿Qué es UART?
+
+UART (Universal Asynchronous Receiver Transmitter) es un módulo que permite comunicación **full-duplex asíncrona** (envío y recepción simultánea). Cuando también incluye capacidades síncronas, se denomina **USART**.
+
+### Características clave:
+- No requiere señal de reloj externa.
+- Usa al menos tres líneas: `TXD`, `RXD` y `GND`.
+- Comunicación basada en bits: Start, datos, paridad (opcional), y Stop.
+- Ambos dispositivos deben tener configuraciones idénticas (baudios, bits de parada, etc.).
+
+---
+
+## 🔌 Niveles y Métodos de Comunicación UART
+
+| Tipo   | Método de señal | Características |
+|--------|------------------|-----------------|
+| RS232  | Voltaje          | Clásico en PC y módem |
+| RS485  | Corriente        | Comunicación diferencial |
+| RS422  | Corriente        | Similar a RS485, unidireccional |
+
+📎 [Referencia RS232](https://en.wikipedia.org/wiki/RS-232)  
+📎 [Referencia RS485](https://en.wikipedia.org/wiki/RS-485)  
+📎 [Referencia RS422](https://en.wikipedia.org/wiki/RS-422)
+
+---
+
+## 🔁 Control de Flujo
+
+UART puede incluir señales adicionales para control de flujo:
+
+- **RTS (Request to Send)**
+- **CTS (Clear to Send)**
+- **DTR / DSR**  
+- También existe control de flujo por software usando bytes como `ACK`, `NACK`.
+
+📎 [Control de flujo UART](https://en.wikipedia.org/wiki/Flow_control_(data))
+
+---
+
+## 🛠 UART en ESP32
+
+ESP32 cuenta con **3 interfaces UART**: `UART0`, `UART1`, y `UART2`. Los pines pueden reasignarse lógicamente. Por defecto:
+
+| UART   | RX       | TX       |
+|--------|----------|----------|
+| UART0  | GPIO3    | GPIO1    |
+| UART1  | GPIO9    | GPIO10   |
+| UART2  | GPIO16   | GPIO17   |
+
+---
+
+## ⚙️ Funciones útiles en Arduino
+
+El objeto `Serial` (basado en `Stream`) facilita el uso de UART. Algunas funciones importantes son:
+
+```cpp
+Serial.begin();
+Serial.print();
+Serial.println();
+Serial.read();
+Serial.available();
+Serial.write();
+Serial.end();
+```
+## 🧪 Ejercicio Práctico 1: Bucle de comunicación UART2
+
+> 🟡 Este ejercicio es **obligatorio** y no requiere hardware adicional más allá de un simple cable jumper.
+
+---
+
+### 🎯 Objetivo del ejercicio
+
+Este ejercicio demuestra cómo se puede utilizar una interfaz UART secundaria (UART2) en el ESP32-S3 para enrutar datos entre el microcontrolador y otro dispositivo, o incluso entre sus propios pines TX y RX conectados entre sí, simulando un canal de eco.
+
+---
+
+### 🔁 Descripción del funcionamiento
+
+El ESP32-S3 tiene varias interfaces UART. En este caso:
+
+- Se utiliza **UART0** para comunicarse con el monitor serie del PC (por USB).
+- Se configura **UART2** en los pines `TX2 = GPIO17` y `RX2 = GPIO16`.
+- El programa actúa como un puente de datos:
+  - Todo lo que se escribe en el monitor serie se transmite por UART2.
+  - UART2 tiene un **cable jumper** entre su salida y entrada (TX2 y RX2), así que los datos enviados se reciben de nuevo.
+  - Esos datos recibidos en RX2 se imprimen nuevamente en el monitor serie por UART0.
+
+Este tipo de configuración se conoce como **"loopback externo"**.
+
+---
+
+###  Montaje necesario
+![image](https://github.com/user-attachments/assets/146745a9-8590-40d9-8391-c662e2728311)
+
+Para que el bucle funcione:
+
+- **Conecta un jumper** entre:
+  - `TX2 (GPIO17)` ➝ `RX2 (GPIO16)`
+
+Esto permite que el ESP32 se escuche a sí mismo por UART2, facilitando la verificación de transmisión y recepción sin usar dispositivos externos.
+
+---
+
+### 🔎 Qué se pretende demostrar
+
+- Cómo usar múltiples UARTs en el ESP32.
+- Cómo redirigir datos de una UART a otra.
+- Cómo capturar y mostrar los datos en el terminal de desarrollo.
+- La importancia del loopback para pruebas de comunicación serie.
+
+---
+##Resultado:
+(hacer zoom al monitor)
+![image](https://github.com/user-attachments/assets/a677c5b6-cf6c-4950-8cc7-3457520861de)
+### 🧰 Elementos utilizados
+
+- ESP32-S3
+- Un cable tipo jumper
+- PlatformIO en VSCode
+- Monitor serie a 115200 baudios
 
 
 
