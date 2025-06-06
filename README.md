@@ -611,6 +611,117 @@ Se implementó un programa que permite la detección de tarjetas RFID y la lectu
 
 
 
+# Práctica 7: Buses de Comunicación III (I2S)
+
+## Objetivo
+
+Comprender el funcionamiento del bus **I2S** (Inter-IC Sound) y realizar prácticas de reproducción de audio digital desde la memoria interna y desde una tarjeta SD, utilizando el protocolo I2S con un ESP32 y el módulo amplificador **MAX98357A**.
+
+---
+
+## Introducción Teórica
+
+El protocolo **I2S** fue desarrollado por Philips para la transmisión de audio digital de alta calidad. A diferencia de SPI o I2C, I2S está diseñado específicamente para audio y permite transmitir datos estéreo en sincronía con una señal de reloj.
+
+Este protocolo usa tres líneas:
+- **SCK/BCLK (Bit Clock):** Sincroniza la transmisión de bits.
+- **WS (Word Select):** Indica si se transmite el canal izquierdo o derecho.
+- **SD (Serial Data):** Datos de audio digital, MSB primero.
+
+📘 **I2S es ideal para audio estéreo de alta fidelidad, hasta 96 kHz y 32 bits por muestra.**
+
+### ¿Por qué usar I2S en el ESP32?
+
+- El **ESP32** tiene soporte I2S por hardware.
+- Permite salida de audio sin pérdidas usando módulos como el **MAX98357A**, que decodifica I2S y amplifica el sonido.
+- Otras placas como Arduino Uno no tienen soporte I2S, lo que limita mucho su uso en proyectos de audio.
+
+---
+
+## Ejercicio Práctico 1: Reproducción de audio desde memoria interna
+
+![image](https://github.com/user-attachments/assets/37511406-b150-4014-ab5e-f3e3bdf813a4)
+
+
+### Descripción
+
+El archivo de audio (en formato AAC) está almacenado como array en la memoria interna del ESP32. Usamos la biblioteca `ESP8266Audio` para reproducirlo a través de I2S.
+
+### Conexión típica:
+
+| Componente     | Pin ESP32 |
+|----------------|-----------|
+| DIN (SD)       | GPIO 26   |
+| BCLK (SCK)     | GPIO 25   |
+| LRC (WS)       | GPIO 22   |
+
+### Código
+
+Archivo: `src/main_memory.cpp`
+
+Se utilizan las siguientes librerías:
+- `AudioGeneratorAAC`
+- `AudioOutputI2S`
+- `AudioFileSourcePROGMEM`
+
+![image](https://github.com/user-attachments/assets/730ddd2a-c5f7-4f1f-9dc4-b2a5a4f4d839)
+
+
+### Salida esperada por consola
+
+
+
+Esto indica que el archivo fue reproducido completamente y se reinicia la espera.
+
+---
+
+## Ejercicio Práctico 2: Reproducción desde tarjeta SD
+
+📷 **[Aquí podrías poner una imagen del cableado con SD + MAX98357A + ESP32]**
+
+### Descripción
+
+En este ejercicio, el archivo `.wav` se almacena en una tarjeta SD. El ESP32 lo lee y lo reproduce por el MAX98357A mediante I2S.
+
+### Librerías necesarias
+
+- [`ESP32-audioI2S`](https://github.com/schreibfaul1/ESP32-audioI2S)
+
+### Conexiones
+
+| Componente     | Pin ESP32 |
+|----------------|-----------|
+| SD_CS          | GPIO 5    |
+| MOSI           | GPIO 23   |
+| MISO           | GPIO 19   |
+| SCK            | GPIO 18   |
+| I2S_DOUT       | GPIO 25   |
+| I2S_BCLK       | GPIO 27   |
+| I2S_LRC        | GPIO 26   |
+
+### Código
+
+Archivo: `src/main_sd.cpp`
+
+Enlace al video de funcionamiento de proyecto : https://drive.google.com/file/d/1t3rs02d7OFJx0nPLFJ2ZFnFH3Y9oQJRv/view?usp=drive_link
+ 
+El programa inicializa la SD, configura I2S y reproduce el archivo WAV desde la ruta:
+
+```cpp
+audio.connecttoFS(SD, "Ensoniq-ZR-76-01-Dope-77.wav");
+### Salida esperada por consola
+
+info        WAV file detected
+streaminfo  44100 Hz, 16-bit stereo
+bitrate     1411 kbps
+ ## Conclusiones
+
+- El protocolo **I2S** permite transmitir audio digital de alta calidad con muy pocos cables.
+- El **ESP32** es ideal para aplicaciones de sonido gracias a su soporte I2S por hardware.
+- El uso del módulo **MAX98357A** facilita la conversión digital-analógica y la amplificación del sonido.
+- Reproducir audio desde **memoria interna** es útil para demostraciones rápidas y simples.
+- Reproducir desde **tarjeta SD** es la mejor opción para manejar archivos de mayor tamaño y duración.
+
 
 
 
