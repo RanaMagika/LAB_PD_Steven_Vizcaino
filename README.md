@@ -704,7 +704,7 @@ En este ejercicio, el archivo `.wav` se almacena en una tarjeta SD. El ESP32 lo 
 
 Archivo: `src/main_sd.cpp`
 
-Enlace al video de funcionamiento de proyecto : https://drive.google.com/file/d/1t3rs02d7OFJx0nPLFJ2ZFnFH3Y9oQJRv/view?usp=drive_link
+Enlace al video de funcionamiento de proyecto : https://drive.google.com/file/d/1ajI90EDiMcjfe77nAoeI6qml9z04_82B/view?usp=drive_link
  
 El programa inicializa la SD, configura I2S y reproduce el archivo WAV desde la ruta:
 
