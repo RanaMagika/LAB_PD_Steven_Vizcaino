@@ -1,0 +1,24 @@
+void setup() {
+  Serial.begin(112500); // Puede usarse también 115200, según preferencia
+  xTaskCreate(
+    anotherTask,
+    "another Task",
+    10000,
+    NULL,
+    1,
+    NULL
+  );
+}
+
+void loop() {
+  Serial.println("this is ESP32 Task");
+  delay(1000);
+}
+
+void anotherTask(void * parameter) {
+  for (;;) {
+    Serial.println("this is another Task");
+    delay(1000);
+  }
+  vTaskDelete(NULL); // Nunca se ejecuta por el bucle infinito
+}
