@@ -857,6 +857,13 @@ Esto permite que el ESP32 se escuche a sí mismo por UART2, facilitando la verif
 - PlatformIO en VSCode
 - Monitor serie a 115200 baudios
 
+## ✅ Conclusiones
+
+- El protocolo **UART** es esencial en sistemas embebidos para establecer comunicaciones simples, bidireccionales y asíncronas entre dispositivos.
+- El **ESP32-S3** cuenta con múltiples interfaces UART, lo que permite establecer canales de comunicación independientes y simultáneos.
+- La prueba de bucle entre `TX2` y `RX2` demuestra cómo verificar el funcionamiento de una UART sin necesidad de hardware adicional.
+- Conectar `UART2` en modo **loopback físico** permite simular una transmisión completa y validar tanto el envío como la recepción de datos.
+- Entender cómo funcionan los puertos UART y cómo redirigir información entre ellos es una habilidad básica pero fundamental para la depuración, pruebas y comunicación con sensores o módulos externos como GPS, GPRS, etc.
 
 
  
