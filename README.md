@@ -457,6 +457,92 @@ Si ambas tareas intentan encender y apagar el LED sin coordinación, podrían ej
 - El semáforo asegura que las tareas no interfieran entre sí, lo que es fundamental en aplicaciones multitarea.
 
 
+
+# Práctica 5: Buses de Comunicación I (I2C)
+
+## Objetivo
+
+Comprender el funcionamiento de los **buses de comunicación entre periféricos**, centrándonos en el **bus I2C**. Esta es la primera práctica de una serie dedicada a los buses más comunes: I2C, SPI, I2S y USART.
+
+---
+
+## Introducción Teórica
+
+El bus I2C (Inter-Integrated Circuit), desarrollado por Philips en 1982, permite la comunicación entre dispositivos usando **solo dos líneas**: una para datos (SDA) y otra para el reloj (SCL). Opera bajo un modelo maestro-esclavo, donde el maestro inicia la comunicación y los esclavos responden.
+
+Este bus es ideal para distancias cortas y baja velocidad, con velocidades estándar de 100 kHz y hasta 400 kHz en modo rápido. El protocolo define direcciones únicas para cada dispositivo y requiere **resistencias Pull-Up** para un funcionamiento estable.
+
+### Ventajas
+- Solo necesita 2 cables.
+- Permite múltiples dispositivos en el mismo bus.
+
+### Desventajas
+- Velocidad limitada.
+- No es full-duplex.
+- Sin verificación de contenido, solo de llegada.
+
+📖 [Referencia útil: I2C en ESP32 con Arduino IDE](https://randomnerdtutorials.com/esp32-i2c-communication-arduino-ide/)
+
+---
+
+## Ejercicio Práctico 1: Escáner I2C
+
+### Descripción
+
+Se realiza un escáner I2C que detecta los dispositivos conectados al bus. Se utiliza el ESP32-S3 y la librería `Wire` para iterar direcciones I2C posibles.
+
+![image](https://github.com/user-attachments/assets/faf10957-5ede-4b63-bb30-36e317105816)
+
+
+### Código
+
+El código se encuentra en el archivo `I2C_Scanner.ino`.
+
+![image](https://github.com/user-attachments/assets/051674c3-f9b4-45be-934c-bbb651e7b5b6)
+
+
+### Conexión Típica para ESP32
+
+| Función | Pin por defecto |
+|--------|-----------------|
+| SDA    | GPIO 21         |
+| SCL    | GPIO 22         |
+| GND    | GND             |
+| VCC    | 3.3V o 5V       |
+
+### Resultado Esperado
+
+I2C Scanner
+Scanning...
+I2C device found at address 0x3C !
+done
+
+
+---
+
+## Ejercicio Práctico 2: Display OLED SSD1306
+
+### Descripción
+
+Se utiliza un **display OLED SSD1306 I2C** para mostrar animaciones y texto. La librería `Adafruit_SSD1306` se encarga de la gestión gráfica. El código incluye pruebas como líneas, formas, texto, e incluso nieve animada.
+
+![image](https://github.com/user-attachments/assets/5c8a93ef-5784-4f4c-b0a9-be92b5275b1b)
+![image](https://github.com/user-attachments/assets/27e05a9b-5799-4838-b346-6cab2d97e3f5)
+
+
+### Librerías necesarias
+
+- [SSD1306 OLED - Lexus2k](https://github.com/lexus2k/ssd1306)
+
+### Código
+
+El código se encuentra en `OLED_Test.ino`.
+🖼️ **[Aquí iría una captura del código corriendo con dibujos en la pantalla]**
+
+
+
+
+
 # Práctica 6: Buses de Comunicación II (SPI)
 
 ## Introducción
