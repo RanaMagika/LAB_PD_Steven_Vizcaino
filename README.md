@@ -707,13 +707,14 @@ Enlace al video de funcionamiento de proyecto : https://drive.google.com/file/d/
  
 El programa inicializa la SD, configura I2S y reproduce el archivo WAV desde la ruta:
 
-```cpp
+
 audio.connecttoFS(SD, "Ensoniq-ZR-76-01-Dope-77.wav");
 ### Salida esperada por consola
 
 info        WAV file detected
 streaminfo  44100 Hz, 16-bit stereo
 bitrate     1411 kbps
+
  ## Conclusiones
 
 - El protocolo **I2S** permite transmitir audio digital de alta calidad con muy pocos cables.
