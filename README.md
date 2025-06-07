@@ -678,7 +678,6 @@ Esto indica que el archivo fue reproducido completamente y se reinicia la espera
 
 ## Ejercicio Práctico 2: Reproducción desde tarjeta SD
 
-📷 **[Aquí podrías poner una imagen del cableado con SD + MAX98357A + ESP32]**
 
 ### Descripción
 
